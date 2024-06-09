@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var showDetails = false
-    @State private var selectedPick = 1
+    //@State private var showDetails = false
+    //@State private var selectedPick = 1
     @State private var arrLen = 8
     
     var body: some View {
@@ -48,7 +48,7 @@ struct ContentView: View {
         var leftIndex = 0
         var rightIndex = arr.count-1
         var aux: Int
-        for index in 1...numOfLoops {
+        for _ in 1...numOfLoops {
             aux = arr[rightIndex]
             arr[rightIndex]=arr[leftIndex]
             arr[leftIndex] = aux
