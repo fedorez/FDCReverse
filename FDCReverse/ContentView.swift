@@ -13,11 +13,17 @@ struct ContentView: View {
     //@State private var selectedPick = 1
     @State private var arrLen = 8
     
+    @State private var numLines = 8
+    @State private var numCols = 8
+    
     var body: some View {
         VStack {
-            Button("reverse", action: reverse)
+            Button("test reverse", action: reverse)
             Stepper("\(arrLen) digits", value: $arrLen, in: 1...12)
             Button("reverse array", action: reverseArray)
+            Stepper("\(numLines) lines", value: $numLines, in: 1...12)
+            Stepper("\(numCols) cols", value: $numCols, in: 1...12)
+            Button("reverse matrix", action: reverseMatrix)
         }
         .padding()
     }
@@ -34,6 +40,23 @@ struct ContentView: View {
         print(arrOfInt)
         reverseArrayOfInt(arrayOfInt: &arrOfInt)
         print(arrOfInt)
+    }
+    
+    func reverseMatrix() {
+        var matrix = generateMatrix(numofLines: numLines, numOfCols: numCols)
+        print(matrix)
+        let numOfLoops = numLines/2
+        var cursor = 0
+        for _ in 1...numOfLoops {
+            var aux: Int
+            for currCol in 0..<numCols {
+                aux = matrix[cursor][currCol]
+                matrix[cursor][currCol] = matrix[cursor + 1][currCol]
+                matrix[cursor + 1][currCol] = aux
+            }
+            cursor = cursor + 2
+        }
+        print(matrix)
     }
     
     func swap2digitsByRef(firstDigit a: inout Int, secondDigit b: inout Int) {
@@ -55,6 +78,22 @@ struct ContentView: View {
             leftIndex = leftIndex + 1
             rightIndex = rightIndex - 1
         }
+    }
+    
+    func generateRandomVector(size: Int) -> [Int] {
+            guard size > 0 else {
+                return [Int]()
+            }
+        let result = Array(repeating: 0, count: size)
+        return result.map{_ in Int.random(in: 0...9)}
+    }
+    
+    func generateMatrix(numofLines: Int, numOfCols: Int)->[[Int]] {
+        var result = Array(repeating: Array(repeating: 0, count: numOfCols), count: numofLines)
+        for i in 0..<numofLines {
+            result[i] = generateRandomVector(size: numOfCols)
+        }
+        return result
     }
 }
 
