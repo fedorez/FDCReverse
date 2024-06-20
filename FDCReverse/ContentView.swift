@@ -13,18 +13,20 @@ struct ContentView: View {
     //@State private var selectedPick = 1
     @State private var arrLen = 8
     
-    @State private var numLines = 3
-    @State private var numCols = 3
+    @State private var numLines = 6
+    @State private var numCols = 6
     @State private var msgString = "RESULT AREA"
     
     var body: some View {
         VStack {
             //Button("test reverse", action: reverse)
-            Stepper("\(arrLen) digits", value: $arrLen, in: 1...12)
+            Stepper("\(arrLen) digits", value: $arrLen, in: 2...12)
             Button("reverse array", action: reverseArray)
-            Stepper("\(numLines) lines", value: $numLines, in: 1...12)
-            Stepper("\(numCols) cols", value: $numCols, in: 1...12)
+                .buttonStyle(.bordered)
+            Stepper("\(numLines) lines", value: $numLines, in: 2...12)
+            Stepper("\(numCols) cols", value: $numCols, in: 2...12)
             Button("reverse matrix", action: reverseMatrix)
+                .buttonStyle(.bordered)
             Spacer()
             Divider()
             Text(msgString)
