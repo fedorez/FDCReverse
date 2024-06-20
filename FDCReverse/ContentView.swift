@@ -13,17 +13,24 @@ struct ContentView: View {
     //@State private var selectedPick = 1
     @State private var arrLen = 8
     
-    @State private var numLines = 8
-    @State private var numCols = 8
+    @State private var numLines = 3
+    @State private var numCols = 3
+    @State private var msgString = "RESULT AREA"
     
     var body: some View {
         VStack {
-            Button("test reverse", action: reverse)
+            //Button("test reverse", action: reverse)
             Stepper("\(arrLen) digits", value: $arrLen, in: 1...12)
             Button("reverse array", action: reverseArray)
             Stepper("\(numLines) lines", value: $numLines, in: 1...12)
             Stepper("\(numCols) cols", value: $numCols, in: 1...12)
             Button("reverse matrix", action: reverseMatrix)
+            Spacer()
+            Divider()
+            Text(msgString)
+                .font(.system(size: 14, weight: .light, design: .monospaced))
+                .italic()
+                .multilineTextAlignment(.center)
         }
         .padding()
     }
@@ -37,13 +44,19 @@ struct ContentView: View {
     
     func reverseArray() {
         var arrOfInt = (1...arrLen).map( {_ in Int.random(in: 1...10)} )
+        var msgToShow = "Initial array:" + "\r\n" +
+        matrix2str(matrix: [arrOfInt]) + "\r\n"
         print(arrOfInt)
         reverseArrayOfInt(arrayOfInt: &arrOfInt)
         print(arrOfInt)
+        msgToShow = msgToShow + "Reversed array:" + "\r\n" +
+        matrix2str(matrix: [arrOfInt]) + "\r\n"
+        showMsg(msg: msgToShow)
     }
     
     func reverseMatrix() {
         var matrix = generateMatrix(numofLines: numLines, numOfCols: numCols)
+        let initialMatrix = matrix2str(matrix: matrix)
         print(matrix)
         let numOfLoops = numLines/2
         var cursor = 0
@@ -57,6 +70,13 @@ struct ContentView: View {
             cursor = cursor + 2
         }
         print(matrix)
+        let reversedMatrix = matrix2str(matrix: matrix)
+        let msgToShow = "Initial matrix:" + "\r\n" +
+        initialMatrix + "\r\n" +
+        "Reversed matrix:" + "\r\n" +
+        reversedMatrix
+        
+        showMsg(msg: msgToShow)
     }
     
     func swap2digitsByRef(firstDigit a: inout Int, secondDigit b: inout Int) {
@@ -92,6 +112,18 @@ struct ContentView: View {
         var result = Array(repeating: Array(repeating: 0, count: numOfCols), count: numofLines)
         for i in 0..<numofLines {
             result[i] = generateRandomVector(size: numOfCols)
+        }
+        return result
+    }
+    
+    func showMsg(msg: String) {
+        msgString = msg
+    }
+    
+    func matrix2str(matrix:[[Int]]) -> String {
+        var result = ""
+        for line in matrix {
+            result = result + line.map { String($0) }.joined(separator: " ") + "\r\n"
         }
         return result
     }
